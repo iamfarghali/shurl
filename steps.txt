@@ -1,0 +1,17 @@
+Shorten Url
+
+- Url
+    - Show all user's urls [User Case]      
+        - Testing
+            - Authenticated user can view his urls              [Done]
+            - Authenticated user can not view others urls       [Done]
+        - Logic
+            - Model                                             [Done]
+            - Controller                                        [Done]
+            - Route                                             [Done]
+        - View [Vue]
+            - ShowUrls                                          [Working..]
+    - Create a shorten url
+    - Remove the url
+    
+
