@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class UrlTest extends TestCase
+class ViewUrlsTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -31,7 +31,7 @@ class UrlTest extends TestCase
     /**
      * @test
      */
-    public function authenticated_user_can_not_view_others_urls ()
+    public function authenticated_user_cannot_view_others_urls ()
     {
 
         $user = factory( User::class )->create();
