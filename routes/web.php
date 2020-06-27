@@ -21,3 +21,5 @@ Auth::routes();
 
 Route::get( '/home', 'HomeController@index' )->name( 'home' );
 Route::get( '/urls', 'UrlController@index' );
+Route::post( '/urls', 'UrlController@store' );
+Route::get( '/urls/{url}', 'UrlController@show' );

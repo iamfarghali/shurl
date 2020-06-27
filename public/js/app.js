@@ -1914,6 +1914,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['urls'],
@@ -37560,12 +37565,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row justify-content-center" },
-    [_c("show-urls", { attrs: { urls: _vm.urls } })],
-    1
-  )
+  return _c("div", { staticClass: "row justify-content-center" }, [
+    _c("div", { staticClass: "col-md-12 mb-5" }, [_c("create-url")], 1),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-12" },
+      [_c("show-urls", { attrs: { urls: _vm.urls } })],
+      1
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

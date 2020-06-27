@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Url;
-use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -15,16 +13,22 @@ class ViewUrlsTest extends TestCase
     /**
      * @test
      */
+    public function guest_cannot_browse_urls_view ()
+    {
+        $this->getJson( '/urls' )
+             ->assertStatus( 401 );
+    }
+
+    /**
+     * @test
+     */
     public function authenticated_user_can_view_his_urls ()
     {
-
-        $user = factory( User::class )->create();
-        $user->urls()->saveMany( factory( Url::class, 2 )->make() );
-        $this->actingAs( $user )
-             ->getJson( '/urls' )
+        $this->signIn();
+        $this->user->urls()->saveMany( make( 'App\Url', 2 ) );
+        $this->getJson( '/urls' )
              ->assertStatus( 200 )
-             ->assertJson( $user->urls->toArray() );
-
+             ->assertJson( $this->user->urls->toArray() );
     }
 
 
@@ -33,19 +37,14 @@ class ViewUrlsTest extends TestCase
      */
     public function authenticated_user_cannot_view_others_urls ()
     {
+        $this->signIn();
 
-        $user = factory( User::class )->create();
-        $otherUser = factory( User::class )->create();
-        $otherUser->urls()->saveMany( factory( Url::class, 10 )->make() );
+        $anotherUser = create( 'App\User' );
+        $anotherUser->urls()->saveMany( make( 'App\Url', 2 ) );
 
-        $this->actingAs( $user )
-             ->getJson( '/urls' )
+        $this->getJson( '/urls' )
              ->assertStatus( 200 )
-             ->assertJsonMissing( $otherUser->urls->toArray() );
+             ->assertJsonMissing( $anotherUser->urls->toArray() );
     }
 
-    protected function setUp (): void
-    {
-        parent::setUp();
-    }
 }

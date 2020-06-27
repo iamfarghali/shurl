@@ -4,5 +4,4 @@
     <div class="container">
         <app :urls="{{$urls}}"></app>
     </div>
-    </div>
 @endsection

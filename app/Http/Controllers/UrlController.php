@@ -9,7 +9,7 @@ class UrlController extends Controller
 {
     public function __construct ()
     {
-        $this->middleware( 'auth' );
+        $this->middleware( 'auth' )->except( 'store' );
     }
 
     /**
@@ -19,21 +19,11 @@ class UrlController extends Controller
      */
     public function index ()
     {
-        $urls = Url::where( 'user_id', auth()->user()->id )->get();
+        $urls = Url::where( 'user_id', auth()->id() )->get();
         if ( request()->expectsJson() ) {
             return response( $urls, 200 );
         }
         return view( 'urls.index', compact( 'urls' ) );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create ()
-    {
-        //
     }
 
     /**
@@ -44,7 +34,13 @@ class UrlController extends Controller
      */
     public function store ( Request $request )
     {
-        //
+        $url = Url::create( [
+            'url'     => $request->url,
+            'user_id' => auth()->check() ? auth()->id() : null
+        ] );
+        $url->code = from_base10_to_base62( $url->id + rand( 1, 99999 ) );
+        $url->update();
+        return response( $url, 201 );
     }
 
     /**
@@ -55,31 +51,12 @@ class UrlController extends Controller
      */
     public function show ( Url $url )
     {
-        //
+        if ( auth()->id() === $url->user_id ) {
+            return response( $url, 200 );
+        }
+        return response( [], 204 );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Url $url
-     * @return \Illuminate\Http\Response
-     */
-    public function edit ( Url $url )
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Url                 $url
-     * @return \Illuminate\Http\Response
-     */
-    public function update ( Request $request, Url $url )
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Url extends Model
 {
-    protected $guarded = [];
+    protected $fillable = ['url', 'user_id'];
 }
