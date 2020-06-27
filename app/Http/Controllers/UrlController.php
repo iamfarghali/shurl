@@ -19,7 +19,7 @@ class UrlController extends Controller
      */
     public function index ()
     {
-        $urls = Url::where( 'user_id', auth()->id() )->get();
+        $urls = Url::where( 'user_id', auth()->id() )->orderBy( 'id', 'DESC' )->get();
         if ( request()->expectsJson() ) {
             return response( $urls, 200 );
         }

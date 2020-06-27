@@ -28,7 +28,7 @@ class ViewUrlsTest extends TestCase
         $this->user->urls()->saveMany( make( 'App\Url', 2 ) );
         $this->getJson( '/urls' )
              ->assertStatus( 200 )
-             ->assertJson( $this->user->urls->toArray() );
+             ->assertExactJson( $this->user->urls->toArray() );
     }
 
 
