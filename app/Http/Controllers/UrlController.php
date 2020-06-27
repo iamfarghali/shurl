@@ -20,6 +20,9 @@ class UrlController extends Controller
     public function index ()
     {
         $urls = Url::where( 'user_id', auth()->user()->id )->get();
+        if ( request()->expectsJson() ) {
+            return response( $urls, 200 );
+        }
         return view( 'urls.index', compact( 'urls' ) );
     }
 

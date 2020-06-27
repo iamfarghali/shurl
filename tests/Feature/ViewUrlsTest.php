@@ -21,10 +21,9 @@ class UrlTest extends TestCase
         $user = factory( User::class )->create();
         $user->urls()->saveMany( factory( Url::class, 2 )->make() );
         $this->actingAs( $user )
-             ->get( '/urls' )
+             ->getJson( '/urls' )
              ->assertStatus( 200 )
-             ->assertSeeText( $user->urls->toArray()[0]['code'] )
-             ->assertSeeText( $user->urls->toArray()[1]['code'] );
+             ->assertJson( $user->urls->toArray() );
 
     }
 
@@ -36,11 +35,13 @@ class UrlTest extends TestCase
     {
 
         $user = factory( User::class )->create();
-        factory( Url::class, 2 )->create( [ 'user_id' => 10 ] );
+        $otherUser = factory( User::class )->create();
+        $otherUser->urls()->saveMany( factory( Url::class, 10 )->make() );
+
         $this->actingAs( $user )
-             ->get( '/urls' )
+             ->getJson( '/urls' )
              ->assertStatus( 200 )
-             ->assertSeeText( 'No Data' );
+             ->assertJsonMissing( $otherUser->urls->toArray() );
     }
 
     protected function setUp (): void
